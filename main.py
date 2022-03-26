@@ -115,7 +115,8 @@ pause = input("Press Enter to continue\n")
 
 # Prints all the attribute values
 print("The Ability Score for each attribute:")
-for (item1, item2, item3) in zip(DND_attributes_keys, attributes_bonus,
+for (item1, item2, item3) in zip(DND_attributes_keys,
+                                 attributes_bonus,
                                  assigned_rolls):
     print(item1, ":", item2 + item3)
 
