@@ -1,13 +1,17 @@
-#   In this program I set-out to make the creation of a Dungeon and Dragons
-# character easier, mainly through the simulation of the dice rolling normally
-# involved. The Character Creation process involves generating values that are
-# assigned to six attributes inherent to DND characters. Values are generated
-# by rolling four dice and adding the largest three rolls, this process is then
-# repeated, until six values are generated. Once assigned the values are
-# then added to any "bonuses" the new value is referred to as an "Ability
-# Scores".A secondary value is derived from each "Ability Score" called a
-# "Modifier", this value is generated through the formula ("Ability Score" -
-# 10)/2, and rounding down. My goaL was to simulate this process for the user.
+"""
+In this program I set-out to make the creation of a Dungeon and Dragons
+character easier, mainly through the simulation of the dice rolling normally
+involved. The Character Creation process involves generating values that are
+assigned to six attributes inherent to DND characters. Values are generated
+by rolling four dice and adding the largest three rolls, this process is then
+repeated, until six values are generated. Once assigned the values are
+then added to any "bonuses" the new value is referred to as an "Ability
+Scores".A secondary value is derived from each "Ability Score" called a
+"Modifier", this value is generated through the formula ("Ability Score" -
+10)/2, and rounding down. The program then updates and creates a pdf for the
+User to use.
+"""
+__author__ = "Albert S. Ramirez"
 
 import random
 import math
@@ -26,6 +30,14 @@ WIDGET_SUBTYPE_KEY = '/Widget'
 
 
 def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
+    """
+
+    :param input_pdf_path: The input pdf file, which functions as a template
+    :param output_pdf_path: The name of the file to output
+    :param data_dict: A dictionary used to fill in pdf template
+    """
+
+    # reads the pdf and fills it in according to the dictionary input
     template_pdf = pdfrw.PdfReader(input_pdf_path)
     for page in template_pdf.pages:
         annotations = page[ANNOT_KEY]
@@ -35,7 +47,7 @@ def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
                     key = annotation[ANNOT_FIELD_KEY][1:-1]
                     if key in data_dict.keys():
                         if type(data_dict[key]) == bool:
-                            if data_dict[key] == True:
+                            if data_dict[key]:
                                 annotation.update(pdfrw.PdfDict(
                                     AS=pdfrw.PdfName('Yes')))
                         else:
@@ -48,8 +60,12 @@ def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
     pdfrw.PdfWriter().write(output_pdf_path, template_pdf)
 
 
-# This function takes no input and returns a list of four random integers.
 def dice_roller():
+    """
+This function takes no input and returns a list of four random integers between
+1 and 6 to simulate rolling a die.
+    :return: A list of 4 random integers, between 1-6
+    """
     rolls = []
     n = 4
     while n > 0:
@@ -170,6 +186,7 @@ for (item1, item2, item3) in zip(DND_attributes_keys,
     print(item1, " modifier: ", mod, sep="")
     attributes_modifier.append(mod)
 
+# This next section creates a dictionary which is used to fill in the pdf
 attributes_pdf = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
 attributes_mod_pdf = ["STRmod", "DEXmod ", "CONmod",
                       "INTmod", "WISmod", "CHamod"]
@@ -181,4 +198,5 @@ for (key, value) in zip(attributes_pdf, attributes_assigned):
 for (key, value) in zip(attributes_mod_pdf, attributes_modifier):
     value_dict[key] = value
 
+# This last line creates and updates the pdf.
 fill_pdf(pdf_template, pdf_output, value_dict)
