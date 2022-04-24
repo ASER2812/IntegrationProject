@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="19431e28-c20a-4e14-9703-2a17a12146d7" name="Changes" comment="Merge branch 'main' of https://github.com/ASER2812/IntegrationProject">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="19431e28-c20a-4e14-9703-2a17a12146d7" name="Changes" comment="Merge branch 'main' of https://github.com/ASER2812/IntegrationProject" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -111,7 +108,7 @@
       <workItem from="1648255339871" duration="5802000" />
       <workItem from="1650546469980" duration="6526000" />
       <workItem from="1650588431839" duration="1028000" />
-      <workItem from="1650752299758" duration="2030000" />
+      <workItem from="1650752299758" duration="2094000" />
     </task>
     <task id="LOCAL-00001" summary="Add files via upload">
       <created>1648262478638</created>
@@ -148,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650753496117</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Merge branch 'main' of https://github.com/ASER2812/IntegrationProject">
+      <created>1650757805680</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1650757805680</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

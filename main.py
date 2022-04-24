@@ -31,13 +31,11 @@ WIDGET_SUBTYPE_KEY = '/Widget'
 
 def fill_pdf(input_pdf_path, output_pdf_path, data_dict):
     """
-
+reads the pdf and fills it in according to the dictionary input
     :param input_pdf_path: The input pdf file, which functions as a template
     :param output_pdf_path: The name of the file to output
     :param data_dict: A dictionary used to fill in pdf template
     """
-
-    # reads the pdf and fills it in according to the dictionary input
     template_pdf = pdfrw.PdfReader(input_pdf_path)
     for page in template_pdf.pages:
         annotations = page[ANNOT_KEY]
@@ -76,127 +74,132 @@ This function takes no input and returns a list of four random integers between
     return rolls
 
 
-# Here a dictionary for the "Dungeons and Dragons" attributes is created
-# along with a list of the attributes as keys, for use later.
-DND_attributes_bonuses = {}
-DND_attributes_keys = ["Strength", "Dexterity", "Constitution",
-                       "Intelligence", "Wisdom", "Charisma"]
+def main():
+    # Here a dictionary for the "Dungeons and Dragons" attributes is created
+    # along with a list of the attributes as keys, for use later.
+    DND_attributes_bonuses = {}
+    DND_attributes_keys = ["Strength", "Dexterity", "Constitution",
+                           "Intelligence", "Wisdom", "Charisma"]
 
-# Splash Text that welcomes user.
-print("Welcome to the Character Stat Roller for 5th Edition")
-pause = input("Press Enter to continue\n")
-print("Input the total ability bonuses for each attribute:")
+    # Splash Text that welcomes user.
+    print("Welcome to the Character Stat Roller for 5th Edition")
+    pause = input("Press Enter to continue\n")
+    print("Input the total ability bonuses for each attribute:")
 
-# Outer loop cycles through dictionary keys.
-for key in DND_attributes_keys:
-    # Loops until a good inputs is taken.
-    while key not in DND_attributes_bonuses.keys():
-        print(key, ":", end="")
-        key_bonus = input()
-        # noinspection PyBroadException
-        try:
-            # If good input, The key and value are added to the dictionary.
-            key_bonus = int(key_bonus)
-            DND_attributes_bonuses.update({key: key_bonus})
+    # Outer loop cycles through dictionary keys.
+    for key in DND_attributes_keys:
+        # Loops until a good inputs is taken.
+        while key not in DND_attributes_bonuses.keys():
+            print(key, ":", end="")
+            key_bonus = input()
+            # noinspection PyBroadException
+            try:
+                # If good input, The key and value are added to the dictionary.
+                key_bonus = int(key_bonus)
+                DND_attributes_bonuses.update({key: key_bonus})
 
-        except:
-            pass
-
-# Prompts for next phase of program
-print("\nRolling will now begin")
-print(DND_attributes_bonuses)
-pause = input("press Enter to continue\n")
-
-# This list is used to store, the groups of rolls.
-initial_rolls = []
-# The loop simulates roll 6 groups of four dice.
-for x in range(6):
-    roll = dice_roller()
-    # Each set of rolls is printed for user
-    print(x + 1, ":", roll)
-    # The sum of the greatest 3 dice of a group gets stored.
-    initial_rolls.append(sum(roll[0:3]))
-
-# Prompts for the assignment phase of the program.
-print("The sum of the greatest 3 rolls for each Attempt:", initial_rolls)
-pause = input("Press Enter to continue\n")
-
-# Prints the list of attributes so that the user can assign them.
-print("Assign roll to an attribute:", initial_rolls)
-
-# This list stores attribute selections as the user assigns them.
-assigned_rolls = []
-
-# Loops through every dictionary entry, in the form of a tuple.
-for key, value in DND_attributes_bonuses.items():
-    # This Loop checks for a valid input, a valid input in this case is a value
-    # from the rolls list.
-    valid_value = False
-    while not valid_value:
-        print(key, ":", end="")
-        chosen_score = input()
-        # noinspection PyBroadException
-        try:
-            chosen_score = int(chosen_score)
-
-            # If the value is a valid form it gets tested against the list.
-            if chosen_score in initial_rolls:
-
-                # If that test is also passed, the value is added.
-                assigned_rolls.append(chosen_score)
-
-                # The value is removed from the original list so that a value
-                # cannot be assigned more than twice.
-                initial_rolls.remove(chosen_score)
-                valid_value = True
-            else:
+            except:
                 pass
-        except:
-            pass
 
-# This section creates an ordered list of attribute bonuses.
-attributes_bonus = []
-for key, value in DND_attributes_bonuses.items():
-    attributes_bonus.append(int(value))
-    DND_attributes_keys.append(key)
+    # Prompts for next phase of program
+    print("\nRolling will now begin")
+    print(DND_attributes_bonuses)
+    pause = input("press Enter to continue\n")
 
-# Prompts the user for the results phase of the program.
-print("\nThank you, The Ability Scores and Modifiers will now be displayed:")
-pause = input("Press Enter to continue\n")
+    # This list is used to store, the groups of rolls.
+    initial_rolls = []
+    # The loop simulates roll 6 groups of four dice.
+    for x in range(6):
+        roll = dice_roller()
+        # Each set of rolls is printed for user
+        print(x + 1, ":", roll)
+        # The sum of the greatest 3 dice of a group gets stored.
+        initial_rolls.append(sum(roll[0:3]))
 
-# Prints all the attribute values
-attributes_assigned = []
-print("The Ability Score for each attribute:")
-for (item1, item2, item3) in zip(DND_attributes_keys,
-                                 attributes_bonus,
-                                 assigned_rolls):
-    atr = item2 + item3
-    print(item1, ":", atr)
-    attributes_assigned.append(atr)
+    # Prompts for the assignment phase of the program.
+    print("The sum of the greatest 3 rolls for each Attempt:", initial_rolls)
+    pause = input("Press Enter to continue\n")
 
-# While printing, this calculates individual attribute_bonuses
-print("\nThe Modifier for each attribute:")
-attributes_modifier = []
-for (item1, item2, item3) in zip(DND_attributes_keys,
-                                 attributes_bonus,
-                                 assigned_rolls):
-    # Dungeons and Dragons calculates ability score bonuses through a not so
-    # simple algorithm, which is simulated through the equation below.
-    mod = math.floor(((item2 + item3) - 10) / 2)
-    print(item1, " modifier: ", mod, sep="")
-    attributes_modifier.append(mod)
+    # Prints the list of attributes so that the user can assign them.
+    print("Assign roll to an attribute:", initial_rolls)
 
-# This next section creates a dictionary which is used to fill in the pdf
-attributes_pdf = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
-attributes_mod_pdf = ["STRmod", "DEXmod ", "CONmod",
-                      "INTmod", "WISmod", "CHamod"]
-value_dict = {}
+    # This list stores attribute selections as the user assigns them.
+    assigned_rolls = []
 
-for (key, value) in zip(attributes_pdf, attributes_assigned):
-    value_dict[key] = value
+    # Loops through every dictionary entry, in the form of a tuple.
+    for key, value in DND_attributes_bonuses.items():
+        # This Loop checks for a valid input, a valid input in this case is a
+        # value from the rolls list.
+        valid_value = False
+        while not valid_value:
+            print(key, ":", end="")
+            chosen_score = input()
+            # noinspection PyBroadException
+            try:
+                chosen_score = int(chosen_score)
 
-for (key, value) in zip(attributes_mod_pdf, attributes_modifier):
-    value_dict[key] = value
+                # If the value is a valid form it gets tested against the list.
+                if chosen_score in initial_rolls:
 
-# This last line creates and updates the pdf.
-fill_pdf(pdf_template, pdf_output, value_dict)
+                    # If that test is also passed, the value is added.
+                    assigned_rolls.append(chosen_score)
+
+                    # The value is removed from the original list so that a
+                    # value cannot be assigned more than twice.
+                    initial_rolls.remove(chosen_score)
+                    valid_value = True
+                else:
+                    pass
+            except:
+                pass
+
+    # This section creates an ordered list of attribute bonuses.
+    attributes_bonus = []
+    for key, value in DND_attributes_bonuses.items():
+        attributes_bonus.append(int(value))
+        DND_attributes_keys.append(key)
+
+    # Prompts the user for the results phase of the program.
+    print(
+        "\nThank you, The Ability Scores and Modifiers will now be displayed:")
+    pause = input("Press Enter to continue\n")
+
+    # Prints all the attribute values
+    attributes_assigned = []
+    print("The Ability Score for each attribute:")
+    for (item1, item2, item3) in zip(DND_attributes_keys,
+                                     attributes_bonus,
+                                     assigned_rolls):
+        atr = item2 + item3
+        print(item1, ":", atr)
+        attributes_assigned.append(atr)
+
+    # While printing, this calculates individual attribute_bonuses
+    print("\nThe Modifier for each attribute:")
+    attributes_modifier = []
+    for (item1, item2, item3) in zip(DND_attributes_keys,
+                                     attributes_bonus,
+                                     assigned_rolls):
+        # Dungeons and Dragons calculates ability score bonuses through a not
+        # so simple algorithm, which is simulated through the equation below.
+        mod = math.floor(((item2 + item3) - 10) / 2)
+        print(item1, " modifier: ", mod, sep="")
+        attributes_modifier.append(mod)
+
+    # This next section creates a dictionary which is used to fill in the pdf
+    attributes_pdf = ["STR", "DEX", "CON", "INT", "WIS", "CHA"]
+    attributes_mod_pdf = ["STRmod", "DEXmod ", "CONmod",
+                          "INTmod", "WISmod", "CHamod"]
+    value_dict = {}
+
+    for (key, value) in zip(attributes_pdf, attributes_assigned):
+        value_dict[key] = value
+
+    for (key, value) in zip(attributes_mod_pdf, attributes_modifier):
+        value_dict[key] = value
+
+    # This last line creates and updates the pdf.
+    fill_pdf(pdf_template, pdf_output, value_dict)
+
+if __name__ == "__main__":
+    main()
