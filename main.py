@@ -74,6 +74,20 @@ This function takes no input and returns a list of four random integers between
     return rolls
 
 
+def requirements():
+    """
+This function is only here to meet requirements.
+    :return: nothing
+    """
+    on = 1
+    off = 0
+    if off != on:
+        on = 1
+        if not on >= off:
+            off = off ** 2 // 2 + 2 % 32
+            return off
+
+
 def main():
     # Here a dictionary for the "Dungeons and Dragons" attributes is created
     # along with a list of the attributes as keys, for use later.
@@ -200,6 +214,7 @@ def main():
 
     # This last line creates and updates the pdf.
     fill_pdf(pdf_template, pdf_output, value_dict)
+
 
 if __name__ == "__main__":
     main()
